@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Lint and test
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    steps:
+      - name: Install system packages
+        run: >
+          pacman -Syu --noconfirm --needed
+          git aria2 python python-pip python-textual python-rich python-pytest ruff
+          nodejs npm chromium desktop-file-utils procps-ng
+      - uses: actions/checkout@v4
+      - name: Trust the checkout
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Install Grab
+        run: |
+          python -m venv --system-site-packages /opt/venv
+          /opt/venv/bin/pip install --no-deps -e .
+          echo "/opt/venv/bin" >> "$GITHUB_PATH"
+      - name: Lint
+        run: |
+          ruff check .
+          ruff format --check .
+      - name: Install extension test dependencies
+        run: npm ci --prefix tests
+      - name: Test
+        run: python -m pytest -q
+
+  package:
+    name: Arch package
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    steps:
+      - name: Install system packages
+        run: >
+          pacman -Syu --noconfirm --needed
+          git sudo namcap aria2 python python-textual python-rich
+          python-build python-installer python-wheel python-setuptools
+      - uses: actions/checkout@v4
+      - name: Build as a normal user
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          useradd -m builder
+          chown -R builder:builder "$GITHUB_WORKSPACE"
+          sudo -u builder git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          sudo -u builder bash "$GITHUB_WORKSPACE/packaging/arch/build-local.sh"

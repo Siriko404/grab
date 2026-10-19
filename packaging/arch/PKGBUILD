@@ -1,0 +1,34 @@
+# Maintainer: Sina Soleimanipour <https://github.com/Siriko404>
+pkgname=grab-dl
+_repo=grab
+pkgver=0.3.0
+pkgrel=1
+pkgdesc='Lean download manager: an aria2 engine in a terminal app, a CLI and a Chromium extension'
+arch=(any)
+url='https://github.com/Siriko404/grab'
+license=(MIT)
+depends=(aria2 python python-textual python-rich)
+makedepends=(python-build python-installer python-wheel python-setuptools)
+optdepends=('chromium: use the browser extension'
+            'libnotify: desktop notifications'
+            'wl-clipboard: copy links'
+            'xdg-utils: open downloaded files')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('SKIP') # run `updpkgsums` once the v$pkgver tag exists
+
+build() {
+  cd "$_repo-$pkgver"
+  python -m build --wheel --no-isolation
+}
+
+package() {
+  cd "$_repo-$pkgver"
+  python -m installer --destdir="$pkgdir" dist/*.whl
+
+  # Browser host manifests, launcher entry, icon and the extension, from the installed package.
+  local site
+  site=$(python -c 'import sysconfig; print(sysconfig.get_path("purelib"))')
+  PYTHONPATH="$pkgdir$site" python -m grab.integrate --system --destdir="$pkgdir"
+
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
