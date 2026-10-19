@@ -1,0 +1,32 @@
+name: Bug report
+description: Something does not work
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The exact commands or clicks. A URL that reproduces it helps, if it is safe to share.
+  - type: input
+    id: version
+    attributes:
+      label: Output of `grab --version`
+    validations:
+      required: true
+  - type: input
+    id: system
+    attributes:
+      label: Distribution, terminal and browser (with versions)
+      placeholder: Arch/Omarchy, foot, Chromium 154
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log lines
+      description: "`~/.local/share/grab/aria2.log`. Remove cookies, tokens and private URLs first."
+      render: text
