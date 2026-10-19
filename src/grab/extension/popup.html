@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Grab</title>
+<style>
+  :root { --bg:#fbfbfa; --fg:#1c1d1f; --dim:#6b6f76; --line:#e2e3e5; --acc:#1f8f5a; --row:#f1f2f0; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1b1c1e; --fg:#e8e9ea; --dim:#9a9ea5; --line:#33353a; --row:#25272a; } }
+  * { box-sizing: border-box; }
+  body { margin:0; width:460px; background:var(--bg); color:var(--fg); font:13px/1.35 system-ui, sans-serif; }
+  header { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:1px solid var(--line); }
+  header b { font-size:14px; }
+  label.switch { display:flex; gap:8px; align-items:center; cursor:pointer; color:var(--dim); }
+  .tools { display:flex; gap:8px; padding:8px 14px; align-items:center; }
+  #engine { padding:0 14px 6px; color:var(--dim); font-size:11px; }
+  .tools input[type=search], .tools input[type=text] { flex:1; padding:5px 8px; border:1px solid var(--line); border-radius:6px; background:var(--bg); color:var(--fg); }
+  button { padding:5px 10px; border:1px solid var(--line); border-radius:6px; background:var(--row); color:var(--fg); cursor:pointer; }
+  button.primary { background:var(--acc); border-color:var(--acc); color:#fff; font-weight:600; }
+  button:disabled { opacity:.45; cursor:default; }
+  #list { max-height:340px; overflow:auto; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .row { display:flex; gap:10px; padding:6px 14px; align-items:flex-start; }
+  .row:nth-child(even) { background:var(--row); }
+  .row .t { min-width:0; }
+  .row .l { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .row .u { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--dim); font-size:11px; }
+  footer { display:flex; align-items:center; justify-content:space-between; padding:8px 14px; gap:10px; }
+  #status { color:var(--dim); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  #status.err { color:#c0392b; }
+  #empty { padding:18px 14px; color:var(--dim); }
+</style>
+</head>
+<body>
+<header>
+  <b>Grab</b>
+  <label class="switch" title="Send every download you click straight to Grab">
+    <input type="checkbox" id="auto"> Catch my downloads
+  </label>
+</header>
+<div class="tools">
+  <input type="search" id="filter" placeholder="Filter links" autofocus>
+  <label class="switch"><input type="checkbox" id="all"> all links</label>
+  <button id="selAll">All</button><button id="selNone">None</button>
+</div>
+<div id="list"></div>
+<div class="tools"><input type="text" id="dir" placeholder="Save to… (empty = Grab's default folder)" spellcheck="false"></div>
+<div id="engine"></div>
+<footer><span id="status"></span><button class="primary" id="go" disabled>Download</button></footer>
+<script src="scan.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>

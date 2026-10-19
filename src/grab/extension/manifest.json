@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "Grab",
+  "version": "0.3.0",
+  "description": "Send the links on a page, or every download you click, to Grab.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6Y1b0EHnoNQWJINLe6chI/1qv8wrvs8JS96fuAN27UNtqy5WGshiGWElf1RxjJpW1URxR+6uA03qrbGVVhRAgPmBngBqZreU3PJU0osKiJd7Nzac8nSWBYj5rrpPSiGVHmHW24Wr3H2wdl+SFrUZ8yPip9EiuiLMpDGjBEGggF607zk41wtD+JF6JoPSksf0YMs9hB0SRKW/eyV8lVF2WP/+vQ+P0Qoy8qaYs1FnR0jN590eYFl8VNE9mHPld7me5nuWmfYgpBe1+DGJbkyy1Ax2RwELLzdxfAFbWhwHKEcDQf6Tsj6EgEMFXrhbgXmF8SHwv4Y4xrYCofwjYu4ayQIDAQAB",
+  "permissions": [
+    "downloads",
+    "nativeMessaging",
+    "storage",
+    "scripting",
+    "cookies",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Grab",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16-off.png",
+      "48": "icon48-off.png",
+      "128": "icon128-off.png"
+    }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+D"
+      },
+      "description": "Open Grab (links on this page)"
+    },
+    "toggle-auto": {
+      "suggested_key": {
+        "default": "Alt+Shift+G"
+      },
+      "description": "Turn \u201cCatch my downloads\u201d on or off"
+    }
+  }
+}

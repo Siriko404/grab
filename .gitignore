@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+build/
+dist/
+node_modules/
+# Arch packaging build output
+/packaging/arch/src/
+/packaging/arch/pkg/
+*.pkg.tar.*
+*.tar.gz

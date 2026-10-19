@@ -1,0 +1,8 @@
+{
+  "name": "grab-e2e",
+  "private": true,
+  "description": "Test-only dependency for the headless-Chromium extension tests",
+  "devDependencies": {
+    "playwright-core": "1.63.0"
+  }
+}
