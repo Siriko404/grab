@@ -23,7 +23,7 @@ jobs:
           pacman -Syu --noconfirm --needed
           git aria2 python python-pip python-textual python-rich python-pytest ruff
           nodejs npm chromium desktop-file-utils procps-ng
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Trust the checkout
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Install Grab
@@ -50,7 +50,7 @@ jobs:
           pacman -Syu --noconfirm --needed
           git sudo namcap aria2 python python-textual python-rich
           python-build python-installer python-wheel python-setuptools
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Build as a normal user
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"

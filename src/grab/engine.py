@@ -22,8 +22,7 @@ class Engine:
         self._lock = None
 
     def start(self) -> None:
-        data = config.data_dir()
-        data.mkdir(parents=True, exist_ok=True)
+        data = config.private_dir(config.data_dir())
         lock = open(data / "engine.lock", "a+")  # noqa: SIM115 - held open for the life of the engine
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)

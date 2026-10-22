@@ -22,8 +22,16 @@ def data_dir() -> Path:
     return Path(os.environ.get("GRAB_DATA_DIR") or Path.home() / ".local" / "share" / "grab")
 
 
+def private_dir(path: Path) -> Path:
+    """Create `path` readable only by the user. aria2 rewrites its session file with the default mode, so the
+    folder is what keeps other local users out of it."""
+    path.mkdir(mode=0o700, parents=True, exist_ok=True)
+    path.chmod(0o700)
+    return path
+
+
 def save(cfg: dict) -> None:
-    config_dir().mkdir(parents=True, exist_ok=True)
+    private_dir(config_dir())
     path = config_dir() / "config.json"
     fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
     with os.fdopen(fd, "w") as f:
@@ -31,8 +39,8 @@ def save(cfg: dict) -> None:
 
 
 def load() -> dict:
-    config_dir().mkdir(parents=True, exist_ok=True)
-    data_dir().mkdir(parents=True, exist_ok=True)
+    private_dir(config_dir())
+    private_dir(data_dir())
     cfg = dict(DEFAULTS)
     with contextlib.suppress(OSError, ValueError):
         cfg.update(json.loads((config_dir() / "config.json").read_text()))
